@@ -40,7 +40,7 @@ void AddBack::Loop()
    Double_t EdepSum = 0;
    Double_t EdepAddBackArray[3000000];
 
-   static const Int_t NbCrystInRing = 18;
+   static const Int_t NbCrystInRing = 24;
    static const Int_t NbRings = 3;
 
    Long64_t nbytes = 0, nb = 0;
@@ -104,14 +104,17 @@ void AddBack::Loop()
 
    TFile *File = new TFile("AddBack.root","recreate");
    TTree *Tree = new TTree("Total","Total Edep after AddBack");
+   TH1F *h1 = new TH1F("TotalHist","Total Edep after AddBack", 15501, 0., 15500);
    Double_t EdepAddBack;
    Tree->Branch("Edep", &EdepAddBack, "EdepAddBack/D");
 
    for (Int_t ij=0; ij<itr; ij++) {
 	 EdepAddBack=EdepAddBackArray[ij];
 	 Tree->Fill();
+     h1->Fill(EdepAddBack);
    }
 
    Tree->Write();
+   h1->Write();
    File->Close();
 }

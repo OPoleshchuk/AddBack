@@ -51,11 +51,11 @@ AddBack::AddBack(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("CeBr3_38mmx38mmx38mm_6x3x3crystals_R119.512mm_Ni60_Ex2MeV_T0MeV_3000000.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("CeBr3_38mmx38mmx38mm_6x4x3crystals_R159.349mm_Cs137[0.0]MeV_3000000.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("CeBr3_38mmx38mmx38mm_6x3x3crystals_R119.512mm_Ni60_Ex2MeV_T0MeV_3000000.root");
+         f = new TFile("CeBr3_38mmx38mmx38mm_6x4x3crystals_R159.349mm_Cs137[0.0]MeV_3000000.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("CeBr3_38mmx38mmx38mm_6x3x3crystals_R119.512mm_Ni60_Ex2MeV_T0MeV_3000000.root:/ntuple");
+      TDirectory * dir = (TDirectory*)f->Get("CeBr3_38mmx38mmx38mm_6x4x3crystals_R159.349mm_Cs137[0.0]MeV_3000000.root:/ntuple");
       dir->GetObject("Total",tree);
 
    }
