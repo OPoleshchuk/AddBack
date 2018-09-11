@@ -36,9 +36,9 @@ void AddBack::Loop()
 
    Double_t EventPrev = 0;
    Double_t CrystNbPrev = 0;
-   Double_t EdepPrev = 0;
-   Double_t EdepSum = 0;
-   Double_t EdepAddBackArray[3000000];
+   Double_t EdepResPrev = 0;
+   Double_t EdepResSum = 0;
+   Double_t EdepResAddBackArray[3000000];
 
    static const Int_t NbCrystInRing = 24;
    static const Int_t NbRings = 3;
@@ -80,38 +80,38 @@ void AddBack::Loop()
 	   }
 	}
 	if ((fabs(PositionI1-PositionI2)<=1) && (fabs(PositionJ1-PositionJ2)<=1)) {
-	   EdepSum = Edep + EdepPrev;
+	   EdepResSum = EdepRes + EdepResPrev;
            itr -= 1;
 	}
 	else {
-	   EdepSum = Edep;
+	   EdepResSum = EdepRes;
 	}
       }
 
       else {
-         EdepSum = Edep;
+         EdepResSum = EdepRes;
       }
 
-      EdepAddBackArray[itr] = EdepSum;
+      EdepResAddBackArray[itr] = EdepResSum;
       EventPrev = Event;
       CrystNbPrev = CrystNb;
-      EdepPrev = Edep;
+      EdepResPrev = EdepRes;
 
-      cout<<"Event "<<Event<<"; "<<"CrystNb "<<CrystNb<<"; "<<"Edep "<<Edep<<"; "<<EdepSum<<endl;
-      cout<<EdepAddBackArray[itr]<<" length ="<<itr<<endl;
+      cout<<"Event "<<Event<<"; "<<"CrystNb "<<CrystNb<<"; "<<"EdepRes "<<EdepRes<<"; "<<EdepResSum<<endl;
+      cout<<EdepResAddBackArray[itr]<<" length ="<<itr<<endl;
 
    }
 
    TFile *File = new TFile("AddBack.root","recreate");
-   TTree *Tree = new TTree("Total","Total Edep after AddBack");
-   TH1F *h1 = new TH1F("TotalHist","Total Edep after AddBack", 15501, 0., 15500);
-   Double_t EdepAddBack;
-   Tree->Branch("Edep", &EdepAddBack, "EdepAddBack/D");
+   TTree *Tree = new TTree("Total","Total EdepRes after AddBack");
+   TH1F *h1 = new TH1F("TotalHist","Total EdepRes after AddBack", 15501, 0., 15500);
+   Double_t EdepResAddBack;
+   Tree->Branch("EdepRes", &EdepResAddBack, "EdepResAddBack/D");
 
    for (Int_t ij=0; ij<itr; ij++) {
-	 EdepAddBack=EdepAddBackArray[ij];
+	 EdepResAddBack=EdepResAddBackArray[ij];
 	 Tree->Fill();
-     h1->Fill(EdepAddBack);
+     h1->Fill(EdepResAddBack);
    }
 
    Tree->Write();

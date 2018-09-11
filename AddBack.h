@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
 // Thu Mar 24 14:27:40 2016 by ROOT version 5.34/34
-// from TTree Total/Total Edep
+// from TTree Total/Total EdepRes
 // found on file: CeBr3_38mmx38mmx38mm_16x1x1crystals_R115.629mm_2.5MeV.root
 //////////////////////////////////////////////////////////
 
@@ -24,12 +24,12 @@ public :
    // Declaration of leaf types
    Double_t        Event;
    Double_t        CrystNb;
-   Double_t        Edep;
+   Double_t        EdepRes;
 
    // List of branches
    TBranch        *b_Event;   //!
    TBranch        *b_CrystNb;   //!
-   TBranch        *b_Edep;   //!
+   TBranch        *b_EdepRes;   //!
 
    AddBack(TTree *tree=0);
    virtual ~AddBack();
@@ -51,11 +51,11 @@ AddBack::AddBack(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("CeBr3_38mmx38mmx38mm_6x4x3crystals_R159.349mm_Cs137[0.0]MeV_3000000.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("CeBr3_48mmx48mmx48mm_15x1x3crystals_R129.377mm_gamma1MeV__gap_3.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("CeBr3_38mmx38mmx38mm_6x4x3crystals_R159.349mm_Cs137[0.0]MeV_3000000.root");
+         f = new TFile("CeBr3_48mmx48mmx48mm_15x1x3crystals_R129.377mm_gamma1MeV__gap_3.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("CeBr3_38mmx38mmx38mm_6x4x3crystals_R159.349mm_Cs137[0.0]MeV_3000000.root:/ntuple");
+      TDirectory * dir = (TDirectory*)f->Get("CeBr3_48mmx48mmx48mm_15x1x3crystals_R129.377mm_gamma1MeV__gap_3.root:/ntuple");
       dir->GetObject("Total",tree);
 
    }
@@ -106,7 +106,7 @@ void AddBack::Init(TTree *tree)
 
    fChain->SetBranchAddress("Event", &Event, &b_Event);
    fChain->SetBranchAddress("CrystNb", &CrystNb, &b_CrystNb);
-   fChain->SetBranchAddress("Edep", &Edep, &b_Edep);
+   fChain->SetBranchAddress("EdepRes", &EdepRes, &b_EdepRes);
    Notify();
 }
 
