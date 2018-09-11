@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
 // Thu Mar 24 14:27:40 2016 by ROOT version 5.34/34
-// from TTree Total/Total EdepRes
+// from TTree Total/Total Edep
 // found on file: CeBr3_38mmx38mmx38mm_16x1x1crystals_R115.629mm_2.5MeV.root
 //////////////////////////////////////////////////////////
 
@@ -25,11 +25,17 @@ public :
    Double_t        Event;
    Double_t        CrystNb;
    Double_t        EdepRes;
+   Double_t        EventCS;
+   Double_t        ComptSuppNb;
+   Double_t        EdepComptSuppRes;
 
    // List of branches
    TBranch        *b_Event;   //!
    TBranch        *b_CrystNb;   //!
    TBranch        *b_EdepRes;   //!
+   TBranch        *b_EventCS;   //!
+   TBranch        *b_ComptSuppNb;   //!
+   TBranch        *b_EdepComptSuppRes;   //!
 
    AddBack(TTree *tree=0);
    virtual ~AddBack();
@@ -107,6 +113,9 @@ void AddBack::Init(TTree *tree)
    fChain->SetBranchAddress("Event", &Event, &b_Event);
    fChain->SetBranchAddress("CrystNb", &CrystNb, &b_CrystNb);
    fChain->SetBranchAddress("EdepRes", &EdepRes, &b_EdepRes);
+   fChain->SetBranchAddress("EventCS", &EventCS, &b_EventCS);
+   fChain->SetBranchAddress("ComptSuppNb", &ComptSuppNb, &b_ComptSuppNb);
+   fChain->SetBranchAddress("EdepComptSuppRes", &EdepComptSuppRes, &b_EdepComptSuppRes);
    Notify();
 }
 
