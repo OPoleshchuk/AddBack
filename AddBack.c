@@ -43,6 +43,9 @@ void AddBack::Loop()
     Double_t EdepAddBackArray[3000000];
     Double_t EdepComptSuppArray[3000000];
 
+    Double_t EdepAddBackArrayCrystNb[3000000];
+    Double_t EdepComptSuppArrayComptSupNb[3000000];
+
     static const Int_t NbCrystInRing = 15;
     static const Int_t NbRings = 3;
 
@@ -50,11 +53,18 @@ void AddBack::Loop()
     Long64_t itr = 0;
     Long64_t itr2 = 0;
     Long64_t itr3 = 0;
+    Long64_t GoodEventCounter = 0;
+    Long64_t GoodEventCounterPrev = 0;
+    Long64_t GoodEventCounterPrevPrev = 0;
+    Long64_t jentry;
+    Long64_t ientry;
+    Int_t i;
+    Int_t j;
 
     Int_t counter = 1;
     Int_t CrystArray[NbCrystInRing][NbRings];
-    for (Int_t i=0; i<NbCrystInRing; i++) {
-        for (Int_t j=0; j<NbRings; j++) {
+    for (i=0; i<NbCrystInRing; i++) {
+        for (j=0; j<NbRings; j++) {
             CrystArray[i][j] = counter;
             counter += 1;
         }
@@ -62,18 +72,27 @@ void AddBack::Loop()
 
     Int_t PositionI1, PositionI2, PositionJ1, PositionJ2;
 
-    for (Long64_t jentry=0; jentry<nentries;jentry++) {
-        Long64_t ientry = LoadTree(jentry);
+    for (jentry=0; jentry<nentries;jentry++) {
+        ientry = LoadTree(jentry);
         if (ientry < 0) break;
         nb = fChain->GetEntry(jentry);   nbytes += nb;
         EdepOriginalArray[itr3] = EdepRes;
         itr3 += 1;
+        if (Event - EventPrev != 0) {
+            GoodEventCounterPrev = 0;
+            GoodEventCounter = 0;
+        }
+        if ((CrystNbPrev == 0) && (CrystNb > 0)) {
+
+            GoodEventCounterPrev = 0;
+            GoodEventCounter = 0;
+        }
         if (CrystNb != 0) {
             itr += 1;
             itr2 += 1;
                 if (Event == EventPrev) {
-                    for (Int_t i=0; i<NbCrystInRing; i++) {
-                        for (Int_t j=0; j<NbRings; j++) {
+                    for (i=0; i<NbCrystInRing; i++) {
+                        for (j=0; j<NbRings; j++) {
                             if (CrystArray[i][j] == CrystNb) {
                                 PositionI1 = i;
                                 PositionJ1 = j;
@@ -88,6 +107,7 @@ void AddBack::Loop()
                         EdepSum = EdepRes + EdepPrev;
                         itr -= 1;
                         itr2 -= 1;
+                        GoodEventCounter -= 1;
                     }
                     else {
                         EdepSum = EdepRes;
@@ -96,39 +116,101 @@ void AddBack::Loop()
                 else {
                     EdepSum = EdepRes;
                 }
+
             EdepAddBackArray[itr] = EdepSum;
             EdepComptSuppArray[itr2] = EdepSum;
+
+            EdepAddBackArrayCrystNb[itr2] = CrystNb;
+            GoodEventCounter += 1;
+
         }
 
-        if ((EventCS != 0) && (EventCS == EventPrev) && (CrystNbPrev != 0)) {
-            //if (CrystNbPrev ) {
-                EdepComptSuppArray[itr2] = 0;
-            //}
-
-            /*cout<<" Event deleted!!!"<<endl;
-            cout<<" Event deleted!!!"<<endl;
-            cout<<" Event deleted!!!"<<endl;*/
+        if ((CrystNbPrev == 0) && (CrystNb == 0)){
+            GoodEventCounter = GoodEventCounterPrev;
         }
 
-        cout<<"Event "<<Event<<"; "<<"CrystNb "<<CrystNb<<"; "<<"Edep "<<EdepRes<<"; "<<EdepSum<<endl;
-        cout<<EdepAddBackArray[itr]<<" length AB ="<<itr<<endl;
+        if (CrystNb == 0){
+            for (i = 0; i < GoodEventCounter; i++) {
+                if ((EventCS != 0) && (EventCS == EventPrev)) {
+                    if ((ComptSuppNb - 100 == 1) && (EdepAddBackArrayCrystNb[itr2-i] >= 1) && (EdepAddBackArrayCrystNb[itr2-i] <= 6)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 2) && (EdepAddBackArrayCrystNb[itr2-i] >= 4) && (EdepAddBackArrayCrystNb[itr2-i] <= 9)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 3) && (EdepAddBackArrayCrystNb[itr2-i] >= 7) && (EdepAddBackArrayCrystNb[itr2-i] <= 12)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 4) && (EdepAddBackArrayCrystNb[itr2-i] >= 10) && (EdepAddBackArrayCrystNb[itr2-i] <= 15)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 5) && (EdepAddBackArrayCrystNb[itr2-i] >= 13) && (EdepAddBackArrayCrystNb[itr2-i] <= 18)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 6) && (EdepAddBackArrayCrystNb[itr2-i] >= 16) && (EdepAddBackArrayCrystNb[itr2-i] <= 21)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 7) && (EdepAddBackArrayCrystNb[itr2-i] >= 19) && (EdepAddBackArrayCrystNb[itr2-i] <= 24)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 8) && (EdepAddBackArrayCrystNb[itr2-i] >= 22) && (EdepAddBackArrayCrystNb[itr2-i] <= 27)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 9) && (EdepAddBackArrayCrystNb[itr2-i] >= 25) && (EdepAddBackArrayCrystNb[itr2-i] <= 30)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 10) && (EdepAddBackArrayCrystNb[itr2-i] >= 28) && (EdepAddBackArrayCrystNb[itr2-i] <= 33)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 11) && (EdepAddBackArrayCrystNb[itr2-i] >= 31) && (EdepAddBackArrayCrystNb[itr2-i] <= 36)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 12) && (EdepAddBackArrayCrystNb[itr2-i] >= 34) && (EdepAddBackArrayCrystNb[itr2-i] <= 39)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 13) && (EdepAddBackArrayCrystNb[itr2-i] >= 37) && (EdepAddBackArrayCrystNb[itr2-i] <= 42)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 14) && (EdepAddBackArrayCrystNb[itr2-i] >= 40) && (EdepAddBackArrayCrystNb[itr2-i] <= 45)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 15) && (EdepAddBackArrayCrystNb[itr2-i] >= 43) && (EdepAddBackArrayCrystNb[itr2-i] <= 45)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    else if ((ComptSuppNb - 100 == 15) && (EdepAddBackArrayCrystNb[itr2-i] >= 1) && (EdepAddBackArrayCrystNb[itr2-i] <= 3)) {
+                        EdepComptSuppArray[itr2-i] = 0;
+                    }
+                    //else continue;
+
+                    /*cout<<" Event deleted!!!"<<endl;
+                    cout<<" Event deleted!!!"<<endl;
+                    cout<<" Event deleted!!!"<<endl;*/
+                }
+            }
+
+        }
+
+        //cout<<"Event "<<Event<<"; "<<"CrystNb "<<CrystNb<<"; "<<"Edep "<<EdepRes<<"; "<<EdepSum<<endl;
+        //cout<<EdepAddBackArray[itr]<<" length AB ="<<itr<<endl;
         //cout<<EdepComptSuppArray[itr2]<<" length CS ="<<itr2<<endl;
         /*cout<<" Event "<< Event<<endl;
         cout<<" EventPrev "<< EventPrev<<endl;
         cout<<" EventCS "<< EventCS<<endl;
         cout<<" EventCSPrev "<< EventCSPrev<<endl;*/
-
+        //GoodEventCounterPrevPrev = GoodEventCounterPrev;
+        GoodEventCounterPrev = GoodEventCounter;
         EventPrev = Event;
         EventCSPrev = EventCS;
         CrystNbPrev = CrystNb;
         EdepPrev = EdepRes;
+
     }
 
     TFile *File = new TFile("AddBack.root","recreate");
     TTree *Tree = new TTree("Total","Total Edep after AddBack");
-    TH1F *h1 = new TH1F("TotalHistAB","Total Edep after AddBack", 1500, 0., 1500);
-    TH1F *h2 = new TH1F("TotalHistCS","Total Edep after AddBack and Compton Suppression", 1500, 0., 1500);
-    TH1F *h3 = new TH1F("TotalHistOriginal","Total Edep", 1500, 0., 1500);
+    TH1F *h1 = new TH1F("TotalHistAB","Total Edep after AddBack", 2000, 0., 2000);
+    TH1F *h2 = new TH1F("TotalHistCS","Total Edep after AddBack and Compton Suppression", 2000, 0., 2000);
+    TH1F *h3 = new TH1F("TotalHistOriginal","Total Edep", 2000, 0., 2000);
     Double_t EdepAddBack;
     Tree->Branch("Edep", &EdepAddBack, "EdepAddBack/D");
 
