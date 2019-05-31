@@ -60,7 +60,6 @@ AddBack::AddBack(TTree *tree) : fChain(0)
     }
     TDirectory * dir = (TDirectory*)f->Get(Form("%s:/ntuple", fileN.c_str()));
     dir->GetObject("Total",tree);
-
   }
   Init(tree);
 
