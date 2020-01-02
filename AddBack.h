@@ -1,9 +1,12 @@
-//////////////////////////////////////////////////////////
-// This class has been automatically generated on
-// Thu Mar 24 14:27:40 2016 by ROOT version 5.34/34
-// from TTree Total/Total EdepRes
-//
-//////////////////////////////////////////////////////////
+///Author: Oleksii Poleshchuk
+///
+///KU Leuven 2016-2019
+///
+/// Implementation of the add-back algorithm for
+/// the data simulated with the SpecMATscint GEANT4 simulation
+///
+/// \file AddBack.h
+///
 
 #ifndef AddBack_h
 #define AddBack_h
@@ -24,6 +27,11 @@ class AddBack {
   Double_t        Event;
   Double_t        CrystNb;
   Double_t        EdepRes;
+  Double_t        EdepRes30Cryst;
+  Double_t        EdepRes40Cryst;
+  Double_t        EdepNoRes;
+  Double_t        EdepNoRes30Cryst;
+  Double_t        EdepNoRes40Cryst;
 
   string fileN;
 
@@ -31,6 +39,11 @@ class AddBack {
   TBranch        *b_Event;   //!
   TBranch        *b_CrystNb;   //!
   TBranch        *b_EdepRes;   //!
+  TBranch        *b_EdepRes30Cryst;   //!
+  TBranch        *b_EdepRes40Cryst;   //!
+  TBranch        *b_EdepNoRes;   //!
+  TBranch        *b_EdepNoRes30Cryst;   //!
+  TBranch        *b_EdepNoRes40Cryst;   //!
 
   AddBack(TTree *tree=0);
   virtual ~AddBack();
@@ -52,7 +65,7 @@ AddBack::AddBack(TTree *tree) : fChain(0)
   // if parameter tree is not specified (or zero), connect the file
   // used to generate this class and read the Tree.
 
-  fileN = "CeBr3_48mmx48mmx48mm_15x1x2crystals_R131.25mm_gamma11MeV_Al_Chamber_pos2_pointSource_gap_3.root";
+  fileN = "CeBr3_48mmx48mmx48mm_15x1x3crystals_R131.25mm_gamma0.01MeV_Aluminum5083_Chamber_wallThick_3mm_linear_sourcePosition_129mm_FCEpoxy_epoxy_gap3mm.root";
   if (tree == 0) {
     TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(fileN.c_str());
     if (!f || !f->IsOpen()) {
@@ -108,7 +121,13 @@ void AddBack::Init(TTree *tree)
 
   fChain->SetBranchAddress("Event", &Event, &b_Event);
   fChain->SetBranchAddress("CrystNb", &CrystNb, &b_CrystNb);
-  fChain->SetBranchAddress("EdepNoRes", &EdepRes, &b_EdepRes);
+  fChain->SetBranchAddress("EdepRes", &EdepRes, &b_EdepRes);
+  fChain->SetBranchAddress("EdepRes30Cryst", &EdepRes30Cryst, &b_EdepRes30Cryst);
+  fChain->SetBranchAddress("EdepRes40Cryst", &EdepRes40Cryst, &b_EdepRes40Cryst);
+  fChain->SetBranchAddress("EdepRes", &EdepRes, &b_EdepRes);
+  fChain->SetBranchAddress("EdepNoRes", &EdepNoRes, &b_EdepNoRes);
+  fChain->SetBranchAddress("EdepNoRes30Cryst", &EdepNoRes30Cryst, &b_EdepNoRes30Cryst);
+  fChain->SetBranchAddress("EdepNoRes40Cryst", &EdepNoRes40Cryst, &b_EdepNoRes40Cryst);
   Notify();
 }
 
