@@ -1,3 +1,14 @@
+///Author: Oleksii Poleshchuk
+///
+///KU Leuven 2016-2020
+///
+/// Extraction of data from all simulated files(after addback)
+/// for efficiency curve plot.
+/// (Based on a T.Marchi script)
+///
+/// \file SpecMATSim_TotalNoRes_Analysis_AddBack.C
+///
+
 #include <iostream>
 #include <fstream>
 #include <string>

@@ -1,6 +1,6 @@
-#Author: Oleksii Poleshchuk
+# Author: Oleksii Poleshchuk
 #
-#KU Leuven 2016-2019
+# KU Leuven 2016-2020
 #
 # This script is used for automatic file name generation used in
 # the SpecMATSim_TotalNoRes_Analysis_AddBack.C script

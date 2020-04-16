@@ -1,6 +1,6 @@
 ///Author: Oleksii Poleshchuk
 ///
-///KU Leuven 2016-2019
+///KU Leuven 2016-2020
 ///
 /// Implementation of the add-back algorithm for
 /// the data simulated with the SpecMATscint GEANT4 simulation

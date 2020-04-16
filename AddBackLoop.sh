@@ -2,7 +2,7 @@
 
 #Author: Oleksii Poleshchuk
 #
-#KU Leuven 2016-2019
+#KU Leuven 2016-2020
 #
 # This script is used for automatic add-back for the all files
 # generated with SpecMATscint by replacing the file name "fileN = " value
