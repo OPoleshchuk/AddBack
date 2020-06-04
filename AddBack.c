@@ -101,7 +101,7 @@ void AddBack::Loop()
             }
           }
         }
-        if ((fabs(PositionI1-PositionI2)<=1) && (fabs(PositionJ1-PositionJ2)<=1)) {
+        if (((fabs(PositionI1-PositionI2)<=1) && (fabs(PositionJ1-PositionJ2)<=1)) || (((PositionI1 == 14 || PositionI1 == 0) && (fabs(PositionI1-PositionI2)==14)) && (fabs(PositionJ1-PositionJ2)<=1))) {
           EdepResSum = EdepRes + EdepResPrev;
           EdepNoResSum = EdepNoRes + EdepNoResPrev;
           //if ((PositionJ1<NbRings)&&(PositionJ2<NbRings)) {
@@ -123,7 +123,6 @@ void AddBack::Loop()
           EdepNoResSum = EdepNoRes;
           EdepNoRes30CrystSum = EdepNoRes30Cryst;
           EdepNoRes40CrystSum = EdepNoRes40Cryst;
-
         }
       }
 
@@ -135,7 +134,6 @@ void AddBack::Loop()
         EdepNoResSum = EdepNoRes;
         EdepNoRes30CrystSum = EdepNoRes30Cryst;
         EdepNoRes40CrystSum = EdepNoRes40Cryst;
-
       }
 
       EdepResAddBackArray[itr] = EdepResSum;
@@ -147,6 +145,8 @@ void AddBack::Loop()
       EventPrev = Event;
       CrystNbPrev = CrystNb;
       EdepResPrev = EdepRes;
+      EdepRes30CrystPrev = EdepRes30Cryst;
+      EdepRes40CrystPrev = EdepRes40Cryst;
       EdepNoResPrev = EdepNoRes;
       EdepNoRes30CrystPrev = EdepNoRes30Cryst;
       EdepNoRes40CrystPrev = EdepNoRes40Cryst;
@@ -180,20 +180,27 @@ void AddBack::Loop()
   Tree->Branch("EdepNoRes40CrystAB", &EdepNoRes40CrystAddBack, "EdepNoRes40CrystAddBack/D");
 
   for (Int_t ij=0; ij<itr; ij++) {
-    EdepResAddBack=EdepResAddBackArray[ij];
-    EdepRes30CrystAddBack=EdepRes30CrystAddBackArray[ij];
-    EdepRes40CrystAddBack=EdepRes40CrystAddBackArray[ij];
 
+
+    EdepResAddBack=EdepResAddBackArray[ij];
     EdepNoResAddBack=EdepNoResAddBackArray[ij];
+    EdepRes30CrystAddBack=EdepRes30CrystAddBackArray[ij];
     EdepNoRes30CrystAddBack=EdepNoRes30CrystAddBackArray[ij];
+    EdepRes40CrystAddBack=EdepRes40CrystAddBackArray[ij];
     EdepNoRes40CrystAddBack=EdepNoRes40CrystAddBackArray[ij];
+    if (EdepResAddBackArray[ij] > 0) {
+      h1->Fill(EdepResAddBack);
+      h4->Fill(EdepNoResAddBack);
+    }
+    if (EdepRes30CrystAddBackArray[ij] > 0) {
+      h2->Fill(EdepRes30CrystAddBack);
+      h5->Fill(EdepNoRes30CrystAddBack);
+    }
+    if (EdepRes40CrystAddBackArray[ij] > 0) {
+      h3->Fill(EdepRes40CrystAddBack);
+      h6->Fill(EdepNoRes40CrystAddBack);
+    }
     Tree->Fill();
-    h1->Fill(EdepResAddBack);
-    h2->Fill(EdepRes30CrystAddBack);
-    h3->Fill(EdepRes40CrystAddBack);
-    h4->Fill(EdepNoResAddBack);
-    h5->Fill(EdepNoRes30CrystAddBack);
-    h6->Fill(EdepNoRes40CrystAddBack);
   }
 
   Tree->Write();
